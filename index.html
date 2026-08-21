@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DATA SNAKE // INFILTRACIÓN EN EL PROCESADOR</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Filtro retro visual -->
+  <div class="efecto-crt-lineas"></div>
+
+  <!-- Botón exterior de navegación -->
+  <a href="#" class="btn-regresar-arcade">◀ SALIR AL HUB</a>
+
+  <main id="contenedor-juego">
+
+    <!-- PANTALLA 1: MENÚ PRINCIPAL -->
+    <section id="menu-inicio">
+      <h1 class="titulo-neon">DATA SNAKE</h1>
+      <p class="subtitulo">&gt; INFILTRACIÓN EN EL PROCESADOR_</p>
+
+      <div class="seccion-alias">
+        <label for="input-alias">CÓDIGO DE HACKER / ALIAS:</label>
+        <input type="text" id="input-alias" value="CYBER_GHOST" maxlength="12" autocomplete="off">
+      </div>
+
+      <div class="selector-dificultad">
+        <label for="select-diff">VELOCIDAD DE RELOJ (RELOJ DE CPU):</label>
+        <select id="select-diff">
+          <option value="120">1.0 GHz // ESTÁNDAR</option>
+          <option value="80" selected>2.4 GHz // OVERCLOCK</option>
+          <option value="50">5.0 GHz // NITRO TURBO</option>
+        </select>
+      </div>
+
+      <div class="opciones-modo">
+        <button class="btn-modo" onclick="iniciarInfiltracion()">[ INICIAR INFILTRACIÓN ]</button>
+      </div>
+    </section>
+
+    <!-- PANTALLA 2: ARENA DEL PROCESADOR -->
+    <section id="escenario-juego" class="oculto">
+      <header class="cabecera-arena">
+        <div class="marcador-box">
+          <span class="label-marcador">DATOS:</span>
+          <span id="score-val" class="val-marcador">0000</span>
+        </div>
+        <div class="marcador-box">
+          <span class="label-marcador">TEMPERATURA:</span>
+          <span id="temp-val" class="val-marcador col-temp">35°C</span>
+        </div>
+        <div class="marcador-box">
+          <span class="label-marcador">MÁXIMO:</span>
+          <span id="highscore-val" class="val-marcador">0000</span>
+        </div>
+      </header>
+
+      <div class="cuerpo-arena">
+        <canvas id="lienzo-snake" width="480" height="480"></canvas>
+      </div>
+
+      <div class="controles-partida">
+        <button id="btn-pause" onclick="pausarJuego()">[ PAUSA ]</button>
+        <button id="btn-restart" onclick="reiniciarJuego()">[ REINICIAR ]</button>
+        <button id="btn-menu" onclick="volverAlMenu()">[ MENÚ ]</button>
+      </div>
+
+      <p class="controles-ayuda">CONTROLES: FLECHAS / WASD PARA DIRIGIR EL GUSANO</p>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

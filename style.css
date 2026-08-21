@@ -1,0 +1,227 @@
+/* ===================================================
+   1. RESETEO RETRO Y CONFIGURACIÓN MAESTRA
+   =================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+}
+
+body {
+  background-color: #020408;
+  color: #00f0ff;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===================================================
+   2. CONTENEDOR ARCADE CENTRAL
+   =================================================== */
+#contenedor-juego {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+  max-width: 600px;
+  background: #050b14;
+  border: 3px solid #00f0ff;
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.25), inset 0 0 15px rgba(0, 240, 255, 0.05);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* ===================================================
+   3. CAPA CRT Y BOTÓN FLOTANTE
+   =================================================== */
+.btn-regresar-arcade {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: #050b14;
+  border: 2px solid #ff0055;
+  color: #ff0055;
+  padding: 8px 14px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border-radius: 4px;
+  z-index: 1000;
+  transition: all 0.2s ease;
+}
+
+.btn-regresar-arcade:hover {
+  background: #ff0055;
+  color: #000;
+  box-shadow: 0 0 15px #ff0055;
+}
+
+.efecto-crt-lineas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+  background-size: 100% 4px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ===================================================
+   4. MANEJO DE PANTALLAS Y MENÚ
+   =================================================== */
+.oculto {
+  display: none !important;
+}
+
+#menu-inicio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.titulo-neon {
+  font-size: 3rem;
+  color: #00f0ff;
+  text-shadow: 0 0 10px #00f0ff, 0 0 25px rgba(0, 240, 255, 0.6);
+  letter-spacing: 4px;
+}
+
+.subtitulo {
+  color: #ff0055;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+}
+
+.seccion-alias, .selector-dificultad {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  width: 280px;
+  font-size: 0.85rem;
+}
+
+#input-alias, #select-diff {
+  background: #010408;
+  border: 2px solid #00f0ff;
+  color: #fff;
+  padding: 10px;
+  font-family: inherit;
+  font-weight: bold;
+  border-radius: 4px;
+  outline: none;
+}
+
+#select-diff {
+  cursor: pointer;
+}
+
+.btn-modo {
+  background: #0a1829;
+  border: 2px solid #00f0ff;
+  color: #00f0ff;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.btn-modo:hover {
+  background: #00f0ff;
+  color: #000;
+  box-shadow: 0 0 15px #00f0ff;
+}
+
+/* ===================================================
+   5. ARENA DE JUEGO Y CANVAS
+   =================================================== */
+#escenario-juego {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.cabecera-arena {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #00f0ff;
+}
+
+.marcador-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.label-marcador {
+  font-size: 0.7rem;
+  color: #ff0055;
+}
+
+.val-marcador {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.col-temp {
+  color: #ffcc00;
+}
+
+#lienzo-snake {
+  background: #01050a;
+  border: 2px solid #00f0ff;
+  box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.2);
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.controles-partida {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.controles-partida button {
+  background: #0a1829;
+  border: 2px solid #00f0ff;
+  color: #00f0ff;
+  padding: 8px 14px;
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.controles-partida button:hover {
+  background: #00f0ff;
+  color: #000;
+  box-shadow: 0 0 10px #00f0ff;
+}
+
+.controles-ayuda {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: #3b6b8c;
+}
