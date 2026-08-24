@@ -225,3 +225,22 @@ body {
   font-size: 0.75rem;
   color: #3b6b8c;
 }
+
+/* ===================================================
+   FOOTER GLOBAL DE COPYRIGHT
+   =================================================== */
+.copyright-global {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 8px 10px;
+  background: rgba(1, 5, 10, 0.9);
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
+  color: rgba(0, 240, 255, 0.6);
+  font-size: 0.75rem;
+  text-align: center;
+  letter-spacing: 1px;
+  z-index: 100000;
+  pointer-events: none; /* No interfiere con clics en la pantalla */
+}
