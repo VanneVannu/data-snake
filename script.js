@@ -107,16 +107,11 @@ function iniciarInfiltracion() {
   document.getElementById('menu-inicio').classList.add('oculto');
   document.getElementById('escenario-juego').classList.remove('oculto');
   
-  reiniciarJuego();
+  // Prepara el tablero pero deja el juego pausado antes de arrancar
+  prepararArena();
 }
 
-function volverAlMenu() {
-  clearInterval(gameLoopInterval);
-  document.getElementById('escenario-juego').classList.add('oculto');
-  document.getElementById('menu-inicio').classList.remove('oculto');
-}
-
-function reiniciarJuego() {
+function prepararArena() {
   clearInterval(gameLoopInterval);
   
   snake = [
@@ -131,7 +126,7 @@ function reiniciarJuego() {
   score = 0;
   temp = 35;
   isGameOver = false;
-  isPaused = false;
+  isPaused = true; // Empieza pausado esperando el clic
   powerUp = null;
   firewalls = [];
   activeEffect = null;
@@ -139,17 +134,27 @@ function reiniciarJuego() {
   
   actualizarHUD();
   generarDataNode();
+  renderizar(); // Renderiza el estado inicial estático
   
-  ajustarVelocidad(currentSpeed);
+  document.getElementById('btn-pause').innerText = '[ INICIAR PARTIDA ]';
 }
 
-function ajustarVelocidad(ms) {
-  clearInterval(gameLoopInterval);
-  gameLoopInterval = setInterval(gameStep, ms);
+function reiniciarJuego() {
+  prepararArena();
+  // Al darle a reiniciar/iniciar, quitamos la pausa y arranca el bucle
+  isPaused = false;
+  document.getElementById('btn-pause').innerText = '[ PAUSA ]';
+  ajustarVelocidad(currentSpeed);
 }
 
 function pausarJuego() {
   if (isGameOver) return;
+  
+  // Si el bucle aún no estaba corriendo, lo arrancamos ahora
+  if (!gameLoopInterval) {
+    ajustarVelocidad(currentSpeed);
+  }
+
   isPaused = !isPaused;
   document.getElementById('btn-pause').innerText = isPaused ? '[ REANUDAR ]' : '[ PAUSA ]';
 }
