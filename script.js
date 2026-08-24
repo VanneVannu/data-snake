@@ -99,6 +99,8 @@ let effectTimer = 0;
 /* ===================================================
    3. FLUJO Y CONTROLES
    =================================================== */
+let juegoIniciado = false; // Nueva variable de control
+
 function iniciarInfiltracion() {
   sfx.init();
   baseSpeed = parseInt(document.getElementById('select-diff').value);
@@ -107,13 +109,17 @@ function iniciarInfiltracion() {
   document.getElementById('menu-inicio').classList.add('oculto');
   document.getElementById('escenario-juego').classList.remove('oculto');
   
-  // Resetea los datos, dibuja el estado inicial y congela hasta dar clic
-  prepararEstadoInicial();
+  reiniciarJuego();
 }
 
-function prepararEstadoInicial() {
+function volverAlMenu() {
   clearInterval(gameLoopInterval);
-  gameLoopInterval = null;
+  document.getElementById('escenario-juego').classList.add('oculto');
+  document.getElementById('menu-inicio').classList.remove('oculto');
+}
+
+function reiniciarJuego() {
+  clearInterval(gameLoopInterval);
   
   snake = [
     { x: 10, y: 12 },
@@ -127,7 +133,8 @@ function prepararEstadoInicial() {
   score = 0;
   temp = 35;
   isGameOver = false;
-  isPaused = true;
+  isPaused = true; // Empieza pausado
+  juegoIniciado = false; // Marcamos que aún no empieza
   powerUp = null;
   firewalls = [];
   activeEffect = null;
@@ -135,46 +142,35 @@ function prepararEstadoInicial() {
   
   actualizarHUD();
   generarDataNode();
-  renderizar(); // Muestra el tablero cargado sin moverlo
+  renderizar(); // Dibuja la serpiente estática en la pantalla
   
-  // Cambia el texto del botón principal
-  const btnPause = document.getElementById('btn-pause');
-  if (btnPause) btnPause.innerText = '[ INICIAR PARTIDA ]';
+  // Ponemos el botón en estado inicial
+  const btn = document.getElementById('btn-pause');
+  if (btn) btn.innerText = '[ INICIAR PARTIDA ]';
+
+  // Creamos el intervalo pero no se moverá por estar en isPaused
+  gameLoopInterval = setInterval(gameStep, currentSpeed);
 }
 
-function reiniciarJuego() {
-  prepararEstadoInicial();
-  // Al darle al botón de Reiniciar, arranca la partida directamente
-  iniciarBucle();
-}
-
-function iniciarBucle() {
-  isPaused = false;
-  const btnPause = document.getElementById('btn-pause');
-  if (btnPause) btnPause.innerText = '[ PAUSA ]';
-  ajustarVelocidad(currentSpeed);
+function ajustarVelocidad(ms) {
+  clearInterval(gameLoopInterval);
+  gameLoopInterval = setInterval(gameStep, ms);
 }
 
 function pausarJuego() {
   if (isGameOver) return;
-  
-  // Si el juego aún no ha empezado (está en espera inicial), lo arranca
-  if (!gameLoopInterval) {
-    iniciarBucle();
+
+  // Si es el primer clic tras entrar/reiniciar, inicia la partida
+  if (!juegoIniciado) {
+    juegoIniciado = true;
+    isPaused = false;
+    document.getElementById('btn-pause').innerText = '[ PAUSA ]';
     return;
   }
 
-  // Alternar pausa estándar
+  // Si ya había iniciado, funciona como pausa normal
   isPaused = !isPaused;
-  const btnPause = document.getElementById('btn-pause');
-  if (btnPause) btnPause.innerText = isPaused ? '[ REANUDAR ]' : '[ PAUSA ]';
-}
-
-function volverAlMenu() {
-  clearInterval(gameLoopInterval);
-  gameLoopInterval = null;
-  document.getElementById('escenario-juego').classList.add('oculto');
-  document.getElementById('menu-inicio').classList.remove('oculto');
+  document.getElementById('btn-pause').innerText = isPaused ? '[ REANUDAR ]' : '[ PAUSA ]';
 }
 
 
