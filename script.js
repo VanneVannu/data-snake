@@ -272,7 +272,7 @@ function aplicarPowerUp(tipo) {
   effectTimer = 40; // Aproximadamente 4 a 5 segundos según velocidad
 
   if (tipo === 'freeze') {
-    temp = 35; // Enfria CPU
+    temp = 35; // Enfría CPU
     currentSpeed = baseSpeed * 1.5;
     ajustarVelocidad(currentSpeed);
   } else if (tipo === 'nitro') {
@@ -299,16 +299,18 @@ function ejecutarGameOver() {
   sfx.playCrash();
   clearInterval(gameLoopInterval);
   
-  ctx.fillStyle = 'rgba(2, 4, 8, 0.88)';
+  // Fondo oscuro transparente con matiz frío
+  ctx.fillStyle = 'rgba(6, 8, 12, 0.9)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = '#ff0055';
-  ctx.font = 'bold 22px Courier New';
+  // Texto de error
+  ctx.fillStyle = '#ff3355';
+  ctx.font = 'bold 20px Courier New';
   ctx.textAlign = 'center';
   ctx.fillText('CRASH: BARRERA DETECTADA', canvas.width / 2, canvas.height / 2 - 10);
   
-  ctx.fillStyle = '#00f0ff';
-  ctx.font = '13px Courier New';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '12px Courier New';
   ctx.fillText('PRESIONA REINICIAR PARA NUEVO INTENTO', canvas.width / 2, canvas.height / 2 + 25);
 }
 
@@ -331,15 +333,15 @@ function actualizarHUD() {
 }
 
 /* ===================================================
-   6. RENDERIZADO VISUAL CON EFECTOS NEÓN
+   6. RENDERIZADO VISUAL CON EFECTOS NEÓN (BLANCO CUÁNTICO)
    =================================================== */
 function renderizar() {
-  // Fondo
-  ctx.fillStyle = '#01050a';
+  // Fondo del Canvas
+  ctx.fillStyle = '#040508';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // Malla / Circuito
-  ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
   ctx.lineWidth = 1;
   for (let i = 0; i < canvas.width; i += GRID_SIZE) {
     ctx.beginPath();
@@ -348,23 +350,23 @@ function renderizar() {
     ctx.stroke();
   }
 
-  // Cortafuegos (Firewalls)
-  ctx.fillStyle = '#ff0055';
-  ctx.shadowColor = '#ff0055';
-  ctx.shadowBlur = 10;
+  // Cortafuegos (Firewalls - Rojo Fuego)
+  ctx.fillStyle = '#ff3355';
+  ctx.shadowColor = '#ff3355';
+  ctx.shadowBlur = 12;
   firewalls.forEach(fw => {
     ctx.fillRect(fw.x * GRID_SIZE + 1, fw.y * GRID_SIZE + 1, GRID_SIZE - 2, GRID_SIZE - 2);
   });
 
-  // Paquete Estándar (Amarillo)
-  ctx.fillStyle = '#ffcc00';
-  ctx.shadowColor = '#ffcc00';
-  ctx.shadowBlur = 12;
+  // Paquete Estándar (Púrpura Neón Ultra)
+  ctx.fillStyle = '#8a00ff';
+  ctx.shadowColor = '#8a00ff';
+  ctx.shadowBlur = 14;
   ctx.fillRect(dataNode.x * GRID_SIZE + 2, dataNode.y * GRID_SIZE + 2, GRID_SIZE - 4, GRID_SIZE - 4);
 
   // Power-Up Dinámico
   if (powerUp) {
-    if (powerUp.type === 'freeze') ctx.fillStyle = '#00aaff';
+    if (powerUp.type === 'freeze') ctx.fillStyle = '#00e1ff';
     else if (powerUp.type === 'nitro') ctx.fillStyle = '#ff6600';
     else if (powerUp.type === 'cut') ctx.fillStyle = '#00ff66';
 
@@ -373,14 +375,15 @@ function renderizar() {
     ctx.fillRect(powerUp.x * GRID_SIZE + 3, powerUp.y * GRID_SIZE + 3, GRID_SIZE - 6, GRID_SIZE - 6);
   }
 
-  // Gusano (Data Snake)
+  // Gusano (Data Snake - Cabeza Blanco Puro brillante / Cuerpo Gris Metalizado)
   snake.forEach((segment, index) => {
     if (index === 0) {
-      ctx.fillStyle = activeEffect === 'nitro' ? '#ff6600' : (activeEffect === 'freeze' ? '#00aaff' : '#00f0ff');
+      ctx.fillStyle = activeEffect === 'nitro' ? '#ff6600' : (activeEffect === 'freeze' ? '#00e1ff' : '#ffffff');
       ctx.shadowColor = ctx.fillStyle;
-      ctx.shadowBlur = 15;
+      ctx.shadowBlur = 16;
     } else {
-      ctx.fillStyle = '#008899';
+      ctx.fillStyle = '#788090';
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.2)';
       ctx.shadowBlur = 4;
     }
     ctx.fillRect(segment.x * GRID_SIZE + 1, segment.y * GRID_SIZE + 1, GRID_SIZE - 2, GRID_SIZE - 2);
