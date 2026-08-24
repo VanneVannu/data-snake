@@ -107,12 +107,13 @@ function iniciarInfiltracion() {
   document.getElementById('menu-inicio').classList.add('oculto');
   document.getElementById('escenario-juego').classList.remove('oculto');
   
-  // Prepara el tablero pero deja el juego pausado antes de arrancar
-  prepararArena();
+  // Resetea los datos, dibuja el estado inicial y congela hasta dar clic
+  prepararEstadoInicial();
 }
 
-function prepararArena() {
+function prepararEstadoInicial() {
   clearInterval(gameLoopInterval);
+  gameLoopInterval = null;
   
   snake = [
     { x: 10, y: 12 },
@@ -126,7 +127,7 @@ function prepararArena() {
   score = 0;
   temp = 35;
   isGameOver = false;
-  isPaused = true; // Empieza pausado esperando el clic
+  isPaused = true;
   powerUp = null;
   firewalls = [];
   activeEffect = null;
@@ -134,30 +135,48 @@ function prepararArena() {
   
   actualizarHUD();
   generarDataNode();
-  renderizar(); // Renderiza el estado inicial estático
+  renderizar(); // Muestra el tablero cargado sin moverlo
   
-  document.getElementById('btn-pause').innerText = '[ INICIAR PARTIDA ]';
+  // Cambia el texto del botón principal
+  const btnPause = document.getElementById('btn-pause');
+  if (btnPause) btnPause.innerText = '[ INICIAR PARTIDA ]';
 }
 
 function reiniciarJuego() {
-  prepararArena();
-  // Al darle a reiniciar/iniciar, quitamos la pausa y arranca el bucle
+  prepararEstadoInicial();
+  // Al darle al botón de Reiniciar, arranca la partida directamente
+  iniciarBucle();
+}
+
+function iniciarBucle() {
   isPaused = false;
-  document.getElementById('btn-pause').innerText = '[ PAUSA ]';
+  const btnPause = document.getElementById('btn-pause');
+  if (btnPause) btnPause.innerText = '[ PAUSA ]';
   ajustarVelocidad(currentSpeed);
 }
 
 function pausarJuego() {
   if (isGameOver) return;
   
-  // Si el bucle aún no estaba corriendo, lo arrancamos ahora
+  // Si el juego aún no ha empezado (está en espera inicial), lo arranca
   if (!gameLoopInterval) {
-    ajustarVelocidad(currentSpeed);
+    iniciarBucle();
+    return;
   }
 
+  // Alternar pausa estándar
   isPaused = !isPaused;
-  document.getElementById('btn-pause').innerText = isPaused ? '[ REANUDAR ]' : '[ PAUSA ]';
+  const btnPause = document.getElementById('btn-pause');
+  if (btnPause) btnPause.innerText = isPaused ? '[ REANUDAR ]' : '[ PAUSA ]';
 }
+
+function volverAlMenu() {
+  clearInterval(gameLoopInterval);
+  gameLoopInterval = null;
+  document.getElementById('escenario-juego').classList.add('oculto');
+  document.getElementById('menu-inicio').classList.remove('oculto');
+}
+
 
 /* ===================================================
    4. BUCLE PRINCIPAL DE LÓGICA (GAME STEP)
